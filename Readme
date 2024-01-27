@@ -1,9 +1,7 @@
 
 
   a. String compression
-Implement a method to perform string compression. E.g. ‘aabcccccaaa’ should be a2b1c5a3. The
-code to implement this is given in the link - https://www.educative.io/answers/string-
-compression-using-run-length-encoding
+Implement a method to perform string compression. E.g. ‘aabcccccaaa’ should be a2b1c5a3. 
 
 Think about memory occupied and how it can be improved.
 Bonus 1:
