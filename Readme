@@ -1,0 +1,284 @@
+
+
+  a. String compression
+Implement a method to perform string compression. E.g. ‘aabcccccaaa’ should be a2b1c5a3. The
+code to implement this is given in the link - https://www.educative.io/answers/string-
+compression-using-run-length-encoding
+
+Think about memory occupied and how it can be improved.
+Bonus 1:
+The answer should be taken into second compressor and compress further.
+E.g. a2b2c1a3c3 should become ab2c1ac3
+
+Answer : 
+def ab(a):
+    i = 0
+    x = ''
+    while(i < len(a)):
+        j = i+1
+        c = 1
+        while j < len(a) and (a[i] == a[j]):
+            j += 1
+            c += 1
+        if c == 1:
+            x += a[i]
+        else:
+            x += a[i]+str(c)
+        i = j
+    return x
+
+# Take input from the user
+user_input = input("Enter a string: ")
+print(ab(user_input))
+
+
+Bonus 2: decompress2
+ab2c1ac3 should return aabbcaaaccc.
+Think about how you will test this code.
+
+Answer:
+
+def string(s):
+    i = 0
+    decompressed = ''
+    while i < len(s):
+        if not s[i].isdigit():
+            if i+1 < len(s) and s[i+1].isdigit():
+                decompressed += s[i] * int(s[i+1])
+                i += 2
+            else:
+                decompressed += s[i]
+                i += 1
+        else:
+            i += 1
+    return decompressed
+
+# Take input from the user
+user = input()
+print(string(user))
+
+.........................................................................................................................................................................
+
+
+b. Linked List - The link shows a program to find the nth element of a linked list.
+
+Find a way to find the kth to the last element of linked list ( assume length of linked list is not
+known)
+Bonus 1:
+Can you minimize the number of times you run through the loop.
+
+Answer:
+
+class Node:
+    def __init__(self, data=None):
+        self.data = data
+        self.next = None
+
+class LinkedList:
+    def __init__(self):
+        self.head = None
+
+    def append(self, data):
+        if not self.head:
+            self.head = Node(data)
+        else:
+            current = self.head
+            while current.next:
+                current = current.next
+            current.next = Node(data)
+
+    def find_nth_from_end(self, n):
+        pointer1 = self.head
+        pointer2 = self.head
+
+        # Move pointer2 n nodes ahead in the linked list
+        for i in range(n):
+            if pointer2 is None:
+                return None
+            pointer2 = pointer2.next
+
+        # Move both pointers at the same pace. 
+        # When pointer2 reaches the end, pointer1 will be at the nth node from the end
+        while pointer2:
+            pointer1 = pointer1.next
+            pointer2 = pointer2.next
+
+        return pointer1.data if pointer1 else None
+
+# Create a linked list
+linked_list = LinkedList()
+
+# Take input from the user for the linked list elements
+elements = input("Enter the elements of the linked list, separated by space: ").split()
+for element in elements:
+    linked_list.append(element)
+
+# Take input from the user for the value of n
+n = int(input("Enter the value of n: "))
+
+# Find the nth element from the end of the linked list
+print(linked_list.find_nth_from_end(n))
+
+.........................................................................................................................................................................
+
+c. Given an array of integers representing the elevation of a roof structure at
+various positions, each position is separated by a unit length, Write a program
+to determine the amount of water that will be trapped on the roof after heavy
+rainfall.
+Example:
+input : [2 1 3 0 1 2 3]
+Ans: 7 units of water will be trapped
+The next phase is that the values are now not discrete but analog. E.g. I give an equation of
+function that is bounded, can you predict how many units of water gets trapped.
+
+Answer: 
+def maxWater(arr, n): 
+  
+    # To store the maximum water and that can be stored 
+    res = 0
+    # For every element of the array while enter by user
+    for i in range(1, n - 1): 
+        # Find the maximum element on its left side
+        left = arr[i] 
+        for j in range(i): 
+            left = max(left, arr[j]) 
+        # Find the maximum element on its right side
+        right = arr[i] 
+  
+        for j in range(i + 1, n): 
+            right = max(right, arr[j]) 
+  
+        # Update the maximum water while filling 
+        res = res + (min(left, right) - arr[i]) 
+  
+    return res 
+    # for user input part 
+arr =  [int(x) for x in input().split()]
+n = len(arr) 
+
+print(maxWater(arr, n)) 
+
+.........................................................................................................................................................................
+
+
+d. Count Ways to Express a Number as the Sum of Consecutive Natural Numbers
+Given a natural number n, we are asked to find the total number of ways to express n as
+the sum of consecutive natural numbers.
+Example 1:Input: 15
+Output: 3
+Explanation: There are 3 ways to represent 15 as sum of
+consecutive natural numbers as follows:
+1 + 2 + 3 + 4 + 5 = 15
+4 + 5 + 6 = 15
+7 + 8 = 15
+
+Answer: 
+
+def count_ways(n):
+    count = 0
+    L = 1
+    while(L * (L + 1) < 2 * n):
+        a = (1.0 * n - (L * (L + 1)) / 2) / (L + 1)
+        if (a - int(a) == 0.0):
+            count += 1
+        L += 1
+    return count
+
+# Take input from the user
+n = int(input("Enter a natural number: "))
+print(count_ways(n))
+
+.........................................................................................................................................................................
+
+e.	Write a piece of code to find the largest 5 digit prime number in the first 100 digits of Pi?
+Answer:
+# for solving the ques I used sympy lib. Of python to simplify.
+import sympy
+def largest_prime(digits):
+    #For removing the decimal point where inputing the pi value
+    digits = digits.replace(".", "")
+    # Start or inputfrom user from the largest possible 5-digit number 
+    for i in range(len(digits) - 5, -1, -1):
+        num = int(digits[i:i+5])
+        if sympy.isprime(num):
+            return num
+
+# for example the first 100 digits of Pi
+# pi_digits = "3.1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679"
+pi_digits = input()
+print(largest_prime(pi_digits))
+
+
+.........................................................................................................................................................................
+
+
+f. 	What is dot product and cross product? Explain use cases of where dot product is used and cross product is used in graphics environment. Add links to places where you studied this information and get back with the understanding.
+Answer :
+Multiplication of vectors
+Multiplication of two vectors is achieved in two ways
+•	Dot product: In the dot product the resultant is a scalar quantity
+•	Cross product: In the cross product the resultant is a vector quantity
+
+Dot Product :  
+The dot product, also known as a scalar product. it is an operation that take two vectors and return a scalar quantity. The dot product of two vectors is calculated as a product of their magnitudes and cosine of anger between them. 
+In other word if A and B are the two vectors the dot product is given by a.b == |a ||b| cos alpha
+Where, alpha is the angle between the vectors.
+Dot Product in Graphics Environment : The dot product is mainly used to determine the angle between the vectors. It can be calculated projection of the vector onto another, which is useful in various graphics operations such as lightning calculations, where it can be used to determine the angle between a light source and red surface.
+
+Cross Product : 
+The cross product also known as a vector product, it is an operation that take two vectors and return a new vector. The magnitude of the cross product is equal to the product of the magnitude of the two vectors and a sine of angle between them and its direction is perpendicular to the plant containing the two vectors.
+ If A and B are the two vectors the cross product is given by a x b == |a ||b| cos alpha n,
+Where, alpha is the angle between the vectors, and Either unit vector perpendicular to the plane Containing a and b.
+
+Cross Product in Graphics Environment : The cross product is used to find a vector that is perpendicular to other vectors. This is particularly useful in graphics for operations such as calculating the normal to the surface which is needed for the lightning calculation or determining the orientation of a polygon.
+
+Link that I prefer to Read:
+1.	https://www.geeksforgeeks.org/vector-algebra/?ref=lbp
+2.	https://www.geeksforgeeks.org/dot-and-cross-products-on-vectors/?ref=lbp
+3.	https://www.geeksforgeeks.org/how-to-find-the-angle-between-two-vectors/?ref=lbp
+
+
+.........................................................................................................................................................................
+
+
+g.	Explain a piece of code that you wrote which you are proud of? If you have not written any code, please write your favorite subject in engineering studies. We can go deep into that subject.
+Answer : 
+As I enter in the programming realm, I playing with different programming language and dealing with different or multiple concept to overcome it. I enter in programming world with Python bcos as per my side this is one of the easiest language to learn 1st before you entering in tech world.
+Code : print( “Hello World” ) 
+As I entered the programming realm, I played with different programming languages and dealt with different or multiple concepts to overcome them. I entered the programming world with Python because, on my side, this is one of the easiest languages to learn 1st before you enter the tech world.
+Code : print( “Hello World” )
+This line of code while simple is incredibly powerful. Bcos it’s often the first line of code that every new programmer writes and signifies the start of a new journey to understanding how we can use code to solve problems, create applications, and express our creativity.
+The “print” function in Python outputs whatever is inside the parentheses of the console. In this case, it outputs the string “Hello World". This line of code taught me the basics of Python syntax, how to call a function, and how to work with strings.
+So, I can confidently say, I’m proud of this quote because it represents learning how to code. It’s a reminder of how far I have come and it motivates me to continue learning and proving.
+
+During my engineering education, I had to go through eight semesters with different subjects, and I found each subject to be similar from a study point of view as I started to go into my engineering career. I worked hard to learn the concepts, read all the concepts, and worked on them as well as possible.
+Therefore, it was quite hard for me to choose which of the subjects was my favorite during those periods, but I mostly enjoyed the subject called "Engineering Drawing", because it allowed me to develop some creative and logical reasoning skills, and therefore, it has become a favorite among me. 
+
+.........................................................................................................................................................................
+
+h. Random crashes – you are given a source code to test and it randomly crashes and it never crashes in the same place ( you have attached a debugger and you find this). Explain what all you would suspect and how would you go about with isolating the cause.
+Answer: 
+Random Crashes in a program can be challenging to debug, especially when they are don’t occur at the same place every time. 
+some potential causes and step can take to isolate issue
+1.	Concurrency Issue : Involves multi-threading or asynchronous operations, race conditions or deadlocks could be causing the crashes, Debugging tools that can help include thread sanitizers or logging the state of each thread at various points in your code.
+2.	Memory Issue : The program might be trying to access memory that shouldn’t,  such as null pointer initialize variable or memory that has been feed out deleted.
+3.	Exception Handling:  Unhandled exception can cause a program to crash.
+4.	External Dependencies.
+5.	Data Input Issue.
+To isolate it the cause:
+1.	Logging. 
+2.	2. Unit Testing .
+3.	Stress Testing.
+4.	Code Reviews.
+
+
+
+
+
+
+
+
+
+
+
+
